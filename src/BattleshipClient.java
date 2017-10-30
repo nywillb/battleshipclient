@@ -1,4 +1,3 @@
-import javax.xml.bind.SchemaOutputResolver;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -17,8 +16,8 @@ public class BattleshipClient {
         try {
             Socket skt = new Socket(server, 2424);
             skt.setTcpNoDelay(true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(skt.getInputStream()));
-            PrintWriter out = new PrintWriter(skt.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(skt.getInputStream())); //lets me say stuff to server
+            PrintWriter out = new PrintWriter(skt.getOutputStream(), true); //lets server say stuff to me
 
             boolean playing = true;
             while(playing) {
@@ -28,14 +27,15 @@ public class BattleshipClient {
                 int mode;
                 while(true) {
                     try {
-                        mode = scanner.nextInt();
+                        mode = scanner.nextInt(); //get mode
                         break;
                     } catch (InputMismatchException e) {
+                        System.out.println("Please type either 1, 2, or 3.");
                         scanner.next(); //need so no infinite loop
                     }
                 }
                 if(mode == 1) {
-                    out.println("GETGAMECODE");
+                    out.println("GETGAMECODE"); //see server documentation
                     String gamecode = in.readLine();
                     System.out.println("Give this gamecode to the person you want to play against: " + gamecode.split(" ")[1]);
                 } else if (mode ==2 ){
@@ -129,7 +129,7 @@ public class BattleshipClient {
                         System.out.println("Sorry, you lost.");
                         break;
                     }
-                    if(gameActive == true) {
+                    if(gameActive) {
                         int strikeX = Integer.parseInt(strike.split(" ")[2]);
                         int strikeY = Integer.parseInt(strike.split(" ")[3]);
                         if (myBoard[strikeX][strikeY].equals("S")) {
